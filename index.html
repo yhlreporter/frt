@@ -39,18 +39,6 @@
         color: var(--text-dark);
       }
 
-      .landing-section {
-        width: 100%;
-        height: 100vh;
-        padding: 60px 20px 30px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: var(--forest-pale);
-        text-align: center;
-        overflow: hidden;
-      }
-
       .navigation {
         position: sticky;
         height: 5vh;
@@ -162,7 +150,7 @@
       .nav-button {
         background: var(--forest-light);
         color: var(--text-dark);
-        border: none;
+        border: solid 2px;
         padding: 5px 10px;
         border-radius: 6px;
         cursor: pointer;
@@ -177,12 +165,24 @@
       .nav-button:hover {
         background: var(--forest-medium);
         color: var(--text-light);
-        border-color: var(--forest-medium);
+        border-color: var(--forest-pale);
       }
 
       .nav-button.active {
         background: var(--forest-light);
         color: var(--text-dark);
+      }
+
+      .landing-section {
+        width: 100%;
+        height: 100vh;
+        padding: 60px 20px 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: var(--forest-pale);
+        text-align: center;
+        overflow: hidden;
       }
 
       .section {
@@ -226,26 +226,27 @@
       }
 
       .header {
-        font-family: "Rufina", serif;
         font-size: 48px;
         font-weight: 700;
-        margin-bottom: 20px;
+        margin-bottom: 2vh;
         line-height: 1.2;
         flex-shrink: 0;
+        max-width: 60vw;
       }
 
       .header h1 {
+        font-family: "Rufina", serif;
         font-size: 3rem;
-        margin-bottom: 15px;
+        /* margin-bottom: 15px; */
         font-weight: 700;
+        margin-bottom: 1vh;
       }
 
       .header p {
         font-size: 1.1rem;
         line-height: 1.5;
-        max-width: 800px;
+
         margin: 0 auto;
-        opacity: 0.95;
       }
 
       .table-container {
@@ -254,6 +255,7 @@
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         padding: 30px;
         width: 100%;
+        gap: 2vh;
 
         margin-top: 20px;
         display: flex;
@@ -267,7 +269,7 @@
       .table-header {
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 1vh;
         flex-shrink: 0;
         align-items: center;
       }
@@ -277,7 +279,7 @@
         flex-wrap: wrap;
         align-items: center;
         gap: 8px;
-        font-size: 1.2rem;
+        font-size: 1rem;
         color: var(--text-light);
         line-height: 1.6;
       }
@@ -288,7 +290,7 @@
 
       .filter-dropdown {
         background: var(--forest-light);
-        color: var(--text-dark);
+        color: var(--text-light);
         border: 2px solid var(--forest-light);
         padding: 0px 8px;
         border-radius: 6px;
@@ -307,7 +309,7 @@
       .filter-dropdown:hover {
         background: var(--forest-medium);
         color: var(--text-light);
-        border-color: var(--forest-medium);
+        border-color: var(--forest-pale);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'  viewBox='0 0 12 12'%3E%3Cpath fill='%23efece8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
       }
@@ -326,8 +328,9 @@
       .download-button {
         background: var(--forest-light);
         color: var(--text-dark);
-        border: none;
+
         padding: 4px 8px;
+        border: solid 2px;
         border-radius: 6px;
         cursor: pointer;
         font-size: 0.8rem;
@@ -340,6 +343,7 @@
       .download-button:hover {
         background: var(--forest-medium);
         color: var(--text-light);
+        border-color: var(--forest-pale);
       }
 
       #table-content {
@@ -359,7 +363,6 @@
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
       }
 
       thead {
@@ -381,8 +384,8 @@
       th {
         font-weight: 600;
         font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        text-transform: capitalize;
+        /* letter-spacing: 0.5px; */
       }
 
       .change-add {
@@ -422,18 +425,40 @@
       }
 
       @media (max-width: 768px) {
-        .header h1 {
-          font-size: 2rem;
-          margin-bottom: 10px;
+        .landing-section {
+          padding: 60px 10px 30px 10px;
+          /* padding: 60px 20px 30px 20px; */
         }
 
-        .header p {
-          font-size: 0.9rem;
-          line-height: 1.4;
+        .table-container {
+          background: var(--text-dark);
+          border-radius: 6px;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          padding: 30px;
+          width: 100%;
+          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
+          margin-bottom: 20px;
         }
 
         .header {
-          margin-bottom: 15px;
+          max-width: 100vw;
+          margin-bottom: 2vh;
+        }
+
+        .header h1 {
+          font-size: 2rem;
+          margin-bottom: 1vh;
+        }
+
+        .header p {
+          max-width: 80vw;
+          font-size: 0.9rem;
+          line-height: 1.2rem;
         }
 
         .navigation {
@@ -447,12 +472,12 @@
         }
 
         .nav-button {
-          font-size: 0.85rem;
-          padding: 6px 12px;
+          font-size: 0.9rem;
+          padding: 6px 10px;
         }
 
         .table-container {
-          padding: 15px;
+          padding: 2vh 1vw;
           margin-top: 15px;
         }
 
@@ -463,8 +488,8 @@
         }
 
         .filter-dropdown {
-          font-size: 1rem;
-          padding: 6px 10px;
+          font-size: 0.9rem;
+          padding: 2px 8px;
           padding-right: 28px;
         }
 
@@ -486,7 +511,7 @@
         th:nth-child(2),
         td:nth-child(2) {
           min-width: 100px;
-          max-width: 150px;
+          max-width: 140px;
           word-wrap: break-word;
         }
 
@@ -503,13 +528,13 @@
         th:nth-child(5),
         td:nth-child(5) {
           min-width: 80px;
-          max-width: 120px;
+          max-width: 140px;
           word-wrap: break-word;
         }
 
         th:nth-child(6),
         td:nth-child(6) {
-          min-width: 60px;
+          min-width: 50px;
         }
       }
     </style>
@@ -566,18 +591,16 @@
         <div class="header">
           <h1>Forest Reserve Tracker</h1>
           <p>
-            This platform tracks additions and removals of forest reserves in
-            Peninsular Malaysia.
+            Addition and removal of forest reserves in Peninsular Malaysia as
+            published in government gazettes.
           </p>
-          <p>
-            Period covered: January 1, 2002 to <span id="update-date1"></span>
-          </p>
+          <p>From Jan 1, 2002 to <span id="update-date1"></span></p>
         </div>
 
         <div class="table-container">
           <div class="table-header">
             <div class="table-title-row">
-              <span class="table-title-text">Forest Reserve Changes in</span>
+              <span class="table-title-text">Changes in</span>
               <select class="filter-dropdown" id="state-dropdown">
                 <option value="Peninsular Malaysia">Peninsular Malaysia</option>
                 <option value="Johor">Johor</option>
@@ -592,18 +615,20 @@
                 <option value="Selangor">Selangor</option>
                 <option value="Terengganu">Terengganu</option>
               </select>
-              <span class="table-title-text">in the Last</span>
-              <select class="filter-dropdown" id="period-dropdown">
-                <option value="60">2 months</option>
-                <option value="180">6 months</option>
-                <option value="365">12 months</option>
-              </select>
+              <p>
+                <span class="table-title-text">in the Last</span>
+                <select class="filter-dropdown" id="period-dropdown">
+                  <option value="60">2 months</option>
+                  <option value="180">6 months</option>
+                  <option value="365">12 months</option>
+                </select>
+              </p>
             </div>
 
             <div class="update-date-row">
               Updated: <span id="update-date2"></span>
               <button class="download-button" id="download-csv">
-                Download Filtered Data as CSV
+                Download Table Data
               </button>
             </div>
           </div>
@@ -681,7 +706,7 @@
 
     <script>
       const CSV_URL =
-        "https://raw.githubusercontent.com/yhlreporter/forestreserveweb/refs/heads/main/gazettes_20260120.csv";
+        "https://raw.githubusercontent.com/yhlreporter/frt/refs/heads/main/gazettes_20260120.csv";
       let lastUpdatedDate = null;
       let allData = [];
       let selectedState = "Peninsular Malaysia";
