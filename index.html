@@ -42,20 +42,13 @@
       .landing-section {
         width: 100%;
         height: 100vh;
-        /* background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); */
-        padding: 60px 20px;
+        padding: 60px 20px 30px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
         background: var(--forest-pale);
         text-align: center;
-        padding-bottom: 30px;
-
-        /* background: linear-gradient(
-          135deg,
-          var(--parchment) 0%,
-          var(--forest-pale) 100%
-        ); */
+        overflow: hidden;
       }
 
       .navigation {
@@ -67,6 +60,92 @@
         background: var(--text-dark);
         width: 100%;
         box-shadow: 0 2px 6px var(--text-dark);
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        scrollbar-color: var(--forest-light) var(--text-dark);
+      }
+
+      .navigation::before,
+      .navigation::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 30px;
+        pointer-events: none;
+        z-index: 1001;
+        display: none;
+      }
+
+      .navigation::before {
+        left: 0;
+        background: linear-gradient(
+          to right,
+          var(--text-dark) 0%,
+          transparent 100%
+        );
+      }
+
+      .navigation::after {
+        right: 0;
+        background: linear-gradient(
+          to left,
+          var(--text-dark) 0%,
+          transparent 100%
+        );
+      }
+
+      .navigation.show-left-arrow::before,
+      .navigation.show-right-arrow::after {
+        display: block;
+      }
+
+      .scroll-indicator {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        z-index: 1002;
+        display: none;
+      }
+
+      .scroll-indicator svg {
+        width: 100%;
+        height: 100%;
+        fill: var(--forest-light);
+      }
+
+      .scroll-indicator-left {
+        left: 5px;
+      }
+
+      .scroll-indicator-right {
+        right: 5px;
+      }
+
+      .navigation.show-left-arrow .scroll-indicator-left,
+      .navigation.show-right-arrow .scroll-indicator-right {
+        display: block;
+      }
+
+      .navigation::-webkit-scrollbar {
+        height: 16px;
+      }
+
+      .navigation::-webkit-scrollbar-track {
+        background: var(--text-dark);
+      }
+
+      .navigation::-webkit-scrollbar-thumb {
+        background: var(--forest-light);
+        border-radius: 3px;
+      }
+
+      .navigation::-webkit-scrollbar-thumb:hover {
+        background: var(--forest-medium);
       }
 
       .nav-buttons {
@@ -76,12 +155,13 @@
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
+        min-width: min-content;
+        padding: 0 10px;
       }
 
       .nav-button {
         background: var(--forest-light);
         color: var(--text-dark);
-        border: none;
         border: none;
         padding: 5px 10px;
         border-radius: 6px;
@@ -90,6 +170,8 @@
         font-weight: 400;
         transition: all 0.3s ease;
         font-family: inherit;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
       .nav-button:hover {
@@ -147,20 +229,20 @@
         font-family: "Rufina", serif;
         font-size: 48px;
         font-weight: 700;
-        margin-bottom: 24px;
+        margin-bottom: 20px;
         line-height: 1.2;
-        flex: 0 0 auto;
+        flex-shrink: 0;
       }
 
       .header h1 {
         font-size: 3rem;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         font-weight: 700;
       }
 
       .header p {
-        font-size: 1.2rem;
-        line-height: 1.6;
+        font-size: 1.1rem;
+        line-height: 1.5;
         max-width: 800px;
         margin: 0 auto;
         opacity: 0.95;
@@ -168,120 +250,103 @@
 
       .table-container {
         background: var(--text-dark);
-        border-radius: 12px;
+        border-radius: 6px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         padding: 30px;
         width: 100%;
-        /* max-width: 1400px; */
-        margin-top: 40px;
-        display: flex;
-        gap: 30px;
-        flex: 1;
-        min-height: 0;
-      }
 
-      .table-section {
-        flex: 0 0 66%;
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
-        max-height: 600px;
-      }
-
-      #table-content {
-        overflow-y: auto;
-        max-height: 500px;
-      }
-
-      .filter-panel {
-        flex: 0 0 calc(34% - 30px);
-        background: var(--forest-pale);
-        border-radius: 8px;
-        padding: 20px;
-      }
-
-      .filter-panel h3 {
-        color: var(--text-dark);
-        font-size: 1.1rem;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
         margin-bottom: 20px;
-        text-align: left;
-      }
-
-      .filter-group {
-        margin-bottom: 25px;
-      }
-
-      .filter-group-title {
-        color: var(--text-dark);
-        font-size: 0.9rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 10px;
-        text-align: left;
-      }
-
-      .filter-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .filter-button {
-        background: var(--forest-light);
-        color: var(--text-dark);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        font-family: inherit;
-      }
-
-      .filter-button:hover {
-        background: var(--forest-medium);
-        color: var(--text-light);
-        border-color: var(--forest-medium);
-      }
-
-      .filter-button.active {
-        background: var(--forest-dark);
-        color: var(--text-light);
-        border-color: var(--forest-dark);
       }
 
       .table-header {
-        margin-bottom: 20px;
-        /* display: flex; */
-        /* justify-content: space-between; */
-        align-items: left;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        flex-shrink: 0;
+        align-items: center;
       }
 
-      .table-header h2 {
+      .table-title-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
         font-size: 1.2rem;
         color: var(--text-light);
-        margin-bottom: 0;
+        line-height: 1.6;
+      }
+
+      .table-title-text {
+        font-weight: 400;
+      }
+
+      .filter-dropdown {
+        background: var(--forest-light);
+        color: var(--text-dark);
+        border: 2px solid var(--forest-light);
+        padding: 0px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23080826' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        padding-right: 32px;
+      }
+
+      .filter-dropdown:hover {
+        background: var(--forest-medium);
+        color: var(--text-light);
+        border-color: var(--forest-medium);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'  viewBox='0 0 12 12'%3E%3Cpath fill='%23efece8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+      }
+
+      /* .filter-dropdown:focus {
+        /* outline: 2px solid var(--forest-light);
+        outline-offset: 2px; 
+        background-color: #52b788;
+      } */
+
+      .update-date-row {
+        color: var(--text-light);
+        font-size: 1rem;
       }
 
       .download-button {
         background: var(--forest-light);
         color: var(--text-dark);
         border: none;
-
-        padding: 5px 10px;
+        padding: 4px 8px;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 400;
-        margin-top: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
         transition: all 0.3s ease;
         font-family: inherit;
+        align-self: flex-start;
       }
 
       .download-button:hover {
         background: var(--forest-medium);
         color: var(--text-light);
-        border-color: var(--forest-medium);
+      }
+
+      #table-content {
+        overflow-x: auto;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
       }
 
       .loading {
@@ -300,11 +365,14 @@
       thead {
         background-color: var(--forest-medium);
         color: var(--text-light);
+        position: sticky;
+        top: 0;
+        z-index: 10;
       }
 
       th,
       td {
-        padding: 5px 5px;
+        padding: 12px 8px;
         text-align: center;
         border-bottom: 1px solid #dddddd2b;
         color: var(--text-light);
@@ -356,48 +424,67 @@
       @media (max-width: 768px) {
         .header h1 {
           font-size: 2rem;
+          margin-bottom: 10px;
         }
 
         .header p {
-          font-size: 1rem;
+          font-size: 0.9rem;
+          line-height: 1.4;
+        }
+
+        .header {
+          margin-bottom: 15px;
+        }
+
+        .navigation {
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-buttons {
+          justify-content: flex-start;
+          flex-wrap: nowrap;
+          padding: 0 10px;
+        }
+
+        .nav-button {
+          font-size: 0.85rem;
+          padding: 6px 12px;
         }
 
         .table-container {
-          padding: 20px;
-          overflow-x: auto;
-          flex-direction: column;
+          padding: 15px;
+          margin-top: 15px;
         }
 
-        .table-section {
-          flex: 0 0 100%;
+        .table-title-row {
+          font-size: 1rem;
+          justify-content: center;
+          text-align: center;
         }
 
-        .filter-panel {
-          flex: 0 0 100%;
-          margin-top: 20px;
+        .filter-dropdown {
+          font-size: 1rem;
+          padding: 6px 10px;
+          padding-right: 28px;
         }
 
         table {
           font-size: 0.75rem;
-          min-width: 100%;
         }
 
         th,
         td {
-          padding: 6px 4px;
+          padding: 8px 4px;
           font-size: 0.75rem;
         }
 
-        /* Make columns narrower on mobile */
         th:nth-child(1),
         td:nth-child(1) {
-          /* Gazette Date */
           min-width: 70px;
         }
 
         th:nth-child(2),
         td:nth-child(2) {
-          /* Forest Reserve */
           min-width: 100px;
           max-width: 150px;
           word-wrap: break-word;
@@ -405,19 +492,16 @@
 
         th:nth-child(3),
         td:nth-child(3) {
-          /* Change */
           min-width: 50px;
         }
 
         th:nth-child(4),
         td:nth-child(4) {
-          /* Area */
           min-width: 60px;
         }
 
         th:nth-child(5),
         td:nth-child(5) {
-          /* State and District */
           min-width: 80px;
           max-width: 120px;
           word-wrap: break-word;
@@ -425,7 +509,6 @@
 
         th:nth-child(6),
         td:nth-child(6) {
-          /* Gazette Number */
           min-width: 60px;
         }
       }
@@ -433,12 +516,22 @@
   </head>
   <body>
     <div class="bodi">
-      <!-- Navigation Bar (outside landing-section for site-wide stickiness) -->
-      <div class="navigation">
+      <!-- Navigation Bar -->
+      <div class="navigation" id="nav-bar">
+        <div class="scroll-indicator scroll-indicator-left">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </svg>
+        </div>
+        <div class="scroll-indicator scroll-indicator-right">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+          </svg>
+        </div>
         <div class="nav-buttons">
           <button
-            class="nav-button active"
-            onclick="scrollToSection('landing-section')"
+            class="nav-button"
+            onclick="scrollToSection('recent-changes')"
           >
             Recent Changes
           </button>
@@ -468,10 +561,10 @@
           </button>
         </div>
       </div>
-      <div class="landing-section">
+
+      <div class="landing-section" id="recent-changes">
         <div class="header">
           <h1>Forest Reserve Tracker</h1>
-
           <p>
             This platform tracks additions and removals of forest reserves in
             Peninsular Malaysia.
@@ -482,51 +575,41 @@
         </div>
 
         <div class="table-container">
-          <!-- Left side: Table Section (60%) -->
-          <div class="table-section">
-            <div class="table-header">
-              <h2 id="table-title">
-                Forest Reserve Changes in Peninsular Malaysia in the Last 2
-                Months
-              </h2>
-              <div>
-                <h2>Updated: <span id="update-date2"></span></h2>
-              </div>
+          <div class="table-header">
+            <div class="table-title-row">
+              <span class="table-title-text">Forest Reserve Changes in</span>
+              <select class="filter-dropdown" id="state-dropdown">
+                <option value="Peninsular Malaysia">Peninsular Malaysia</option>
+                <option value="Johor">Johor</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Kelantan">Kelantan</option>
+                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                <option value="Melaka">Melaka</option>
+                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                <option value="Pahang">Pahang</option>
+                <option value="Perak">Perak</option>
+                <option value="Perlis">Perlis</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Terengganu">Terengganu</option>
+              </select>
+              <span class="table-title-text">in the Last</span>
+              <select class="filter-dropdown" id="period-dropdown">
+                <option value="60">2 months</option>
+                <option value="180">6 months</option>
+                <option value="365">12 months</option>
+              </select>
+            </div>
+
+            <div class="update-date-row">
+              Updated: <span id="update-date2"></span>
               <button class="download-button" id="download-csv">
                 Download Filtered Data as CSV
               </button>
             </div>
-
-            <div id="table-content">
-              <div class="loading">Loading data...</div>
-            </div>
           </div>
 
-          <!-- Right side: Filter Panel (40%) -->
-          <div class="filter-panel">
-            <h3>Which area do you wish to check?</h3>
-
-            <div class="filter-group">
-              <div class="filter-group-title">Area</div>
-              <div class="filter-buttons" id="area-buttons">
-                <!-- State buttons will be dynamically generated here -->
-              </div>
-            </div>
-
-            <div class="filter-group">
-              <div class="filter-group-title">Period</div>
-              <div class="filter-buttons">
-                <button class="filter-button active" data-period="60">
-                  Last 2 months
-                </button>
-                <button class="filter-button" data-period="180">
-                  Last 6 months
-                </button>
-                <button class="filter-button" data-period="365">
-                  Last 12 months
-                </button>
-              </div>
-            </div>
+          <div id="table-content">
+            <div class="loading">Loading data...</div>
           </div>
         </div>
       </div>
@@ -592,50 +675,62 @@
     </div>
 
     <!-- External JavaScript Libraries -->
-    <!-- Leaflet.js - for interactive maps (will be used later for Mapbox integration) -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Chart.js - for creating charts and data visualizations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
-    <!-- PapaParse - for parsing CSV files from URLs or local files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 
     <script>
-      // ============================================
-      // CONFIGURATION AND INITIALIZATION
-      // ============================================
-
-      // URL to the CSV file containing forest reserve gazette data
       const CSV_URL =
-        "https://raw.githubusercontent.com/yhlreporter/frt/refs/heads/main/gazettes_20260120.csv";
-
-      // Variables to store dates (will be set after reading CSV)
+        "https://raw.githubusercontent.com/yhlreporter/forestreserveweb/refs/heads/main/gazettes_20260120.csv";
       let lastUpdatedDate = null;
-      let sixtyDaysAgo = null;
+      let allData = [];
+      let selectedState = "Peninsular Malaysia";
+      let selectedPeriod = 60;
+      let currentFilteredData = [];
 
-      // Variables to store filter state
-      let allData = []; // Store all CSV data
-      let selectedState = "Peninsular Malaysia"; // Default state
-      let selectedPeriod = 60; // Default period in days (2 months)
-      let currentFilteredData = []; // Store currently filtered data for download
+      function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+          document
+            .querySelectorAll(".nav-button")
+            .forEach((btn) => btn.classList.remove("active"));
+          event.target.classList.add("active");
+        }
+      }
 
-      // ============================================
-      // CSV DATA LOADING
-      // ============================================
+      function updateScrollIndicators() {
+        const nav = document.getElementById("nav-bar");
+        const scrollLeft = nav.scrollLeft;
+        const scrollWidth = nav.scrollWidth;
+        const clientWidth = nav.clientWidth;
 
-      // Use PapaParse library to load and parse the CSV file
+        if (scrollLeft > 10) {
+          nav.classList.add("show-left-arrow");
+        } else {
+          nav.classList.remove("show-left-arrow");
+        }
+
+        if (scrollLeft < scrollWidth - clientWidth - 10) {
+          nav.classList.add("show-right-arrow");
+        } else {
+          nav.classList.remove("show-right-arrow");
+        }
+      }
+
+      document
+        .getElementById("nav-bar")
+        .addEventListener("scroll", updateScrollIndicators);
+      window.addEventListener("load", updateScrollIndicators);
+      window.addEventListener("resize", updateScrollIndicators);
+
       Papa.parse(CSV_URL, {
-        download: true, // Download the file from the URL
-        header: true, // First row contains column headers
-        skipEmptyLines: true, // Ignore any blank rows in the CSV
-
-        // This function runs when the CSV is successfully loaded
+        download: true,
+        header: true,
+        skipEmptyLines: true,
         complete: function (results) {
-          processData(results.data); // Process the parsed data
+          processData(results.data);
         },
-
-        // This function runs if there's an error loading the CSV
         error: function (error) {
           document.getElementById("table-content").innerHTML =
             '<div class="no-data">Error loading data: ' +
@@ -644,171 +739,61 @@
         },
       });
 
-      // ============================================
-      // DATA PROCESSING FUNCTION
-      // ============================================
-
-      /**
-       * Filters and sorts the CSV data to show only recent entries
-       * @param {Array} data - Array of objects, each representing a row from the CSV
-       */
       function processData(data) {
-        // Store all data globally for filtering
         allData = data;
-
-        const updateDateToChange = "2025,12,31"; // <-- EDIT THIS DATE
-        // *** MANUALLY EDIT THIS DATE WHEN YOU UPDATE THE DATA ***
-        // Set the "last updated" date here (Year, Month-1, Day)
-        // Note: JavaScript months are 0-indexed, so January = 0, February = 1, etc.
-        // Example: January 20, 2026 = new Date(2026, 0, 20)
+        const updateDateToChange = "2025,12,31";
         lastUpdatedDate = new Date(updateDateToChange);
-        // Find the HTML element where we'll display the update date
         const updateDateEl1 = document.getElementById("update-date1");
         const updateDateEl2 = document.getElementById("update-date2");
+        const formattedDate = lastUpdatedDate.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        updateDateEl1.textContent = formattedDate;
+        updateDateEl2.textContent = formattedDate;
 
-        // Format the last updated date as "January 20, 2026" and display it
-        updateDateEl1.textContent = lastUpdatedDate.toLocaleDateString(
-          "en-US",
-          {
-            year: "numeric", // Show full year (2026)
-            month: "long", // Show full month name (January)
-            day: "numeric", // Show day number (20)
-          },
-        );
-
-        updateDateEl2.textContent = lastUpdatedDate.toLocaleDateString(
-          "en-US",
-          {
-            year: "numeric", // Show full year (2026)
-            month: "long", // Show full month name (January)
-            day: "numeric", // Show day number (20)
-          },
-        );
-
-        // ============================================
-        // GENERATE AREA FILTER BUTTONS
-        // ============================================
-
-        // Manually defined list of states in Peninsular Malaysia
-        const states = [
-          "Johor",
-          "Kedah",
-          "Kelantan",
-          "Kuala Lumpur",
-          "Melaka",
-          "Negeri Sembilan",
-          "Pahang",
-          "Perak",
-          "Perlis",
-          "Selangor",
-          "Terengganu",
-          "Peninsular Malaysia",
-        ];
-
-        // Generate state buttons
-        const areaButtonsContainer = document.getElementById("area-buttons");
-        states.forEach((state) => {
-          const button = document.createElement("button");
-          button.className = "filter-button";
-          // Set "Peninsular Malaysia" as active by default
-          if (state === "Peninsular Malaysia") {
-            button.className = "filter-button active";
-          }
-          button.textContent = state;
-          button.setAttribute("data-state", state);
-
-          // Add click event listener
-          button.addEventListener("click", function () {
-            // Update selected state
-            selectedState = state;
-
-            // Update active state on buttons
-            document
-              .querySelectorAll("#area-buttons .filter-button")
-              .forEach((btn) => {
-                btn.classList.remove("active");
-              });
-            this.classList.add("active");
-
-            // Refilter and display data
+        document
+          .getElementById("state-dropdown")
+          .addEventListener("change", function () {
+            selectedState = this.value;
             filterAndDisplayData();
           });
 
-          areaButtonsContainer.appendChild(button);
-        });
-
-        // ============================================
-        // ADD EVENT LISTENERS TO PERIOD BUTTONS
-        // ============================================
-
-        document.querySelectorAll("[data-period]").forEach((button) => {
-          button.addEventListener("click", function () {
-            // Update selected period
-            selectedPeriod = parseInt(this.getAttribute("data-period"));
-
-            // Update active state on buttons
-            document.querySelectorAll("[data-period]").forEach((btn) => {
-              btn.classList.remove("active");
-            });
-            this.classList.add("active");
-
-            // Refilter and display data
+        document
+          .getElementById("period-dropdown")
+          .addEventListener("change", function () {
+            selectedPeriod = parseInt(this.value);
             filterAndDisplayData();
           });
-        });
-
-        // ============================================
-        // INITIAL DATA DISPLAY
-        // ============================================
-
-        // Display data with default filters
-        filterAndDisplayData();
-
-        // ============================================
-        // SETUP DOWNLOAD BUTTON
-        // ============================================
 
         document
           .getElementById("download-csv")
           .addEventListener("click", function () {
             downloadFilteredDataAsCSV();
           });
+
+        filterAndDisplayData();
       }
 
-      // ============================================
-      // FILTER AND DISPLAY DATA FUNCTION
-      // ============================================
-
-      /**
-       * Filters data based on selected state and period, then displays it
-       */
       function filterAndDisplayData() {
-        // Calculate the start date based on selected period
         const startDate = new Date(lastUpdatedDate);
         startDate.setDate(lastUpdatedDate.getDate() - selectedPeriod);
 
-        // Filter the data based on selected state and period
         let filteredData = allData.filter((row) => {
-          // Construct a Date object from the gazette date columns
           const gazetteDate = new Date(
             parseInt(row.gaz_year),
             parseInt(row.gaz_month) - 1,
             parseInt(row.gaz_day),
           );
-
-          // Check if date is within period
           const withinPeriod =
             gazetteDate >= startDate && gazetteDate <= lastUpdatedDate;
-
-          // Check if state matches (or if "Peninsular Malaysia" is selected)
           const stateMatches =
             selectedState === "Peninsular Malaysia" ||
             row.state === selectedState;
-
           return withinPeriod && stateMatches;
         });
 
-        // Sort the filtered data by date, newest first
         filteredData.sort((a, b) => {
           const dateA = new Date(
             parseInt(a.gaz_year),
@@ -820,57 +805,19 @@
             parseInt(b.gaz_month) - 1,
             parseInt(b.gaz_day),
           );
-
           return dateB - dateA;
         });
 
-        // Store the filtered data for download
         currentFilteredData = filteredData;
-
-        // Update the table title based on selected filters
-        updateTableTitle();
-
-        // Display the filtered data
         displayTable(filteredData);
       }
 
-      // ============================================
-      // UPDATE TABLE TITLE FUNCTION
-      // ============================================
-
-      /**
-       * Updates the table title to reflect current filter selections
-       */
-      function updateTableTitle() {
-        // Determine period text
-        let periodText = "";
-        if (selectedPeriod === 60) {
-          periodText = "Last 2 Months";
-        } else if (selectedPeriod === 180) {
-          periodText = "Last 6 Months";
-        } else if (selectedPeriod === 365) {
-          periodText = "Last 12 Months";
-        }
-
-        // Update the title
-        const titleElement = document.getElementById("table-title");
-        titleElement.textContent = `Forest Reserve Changes in ${selectedState} in the ${periodText}`;
-      }
-
-      // ============================================
-      // DOWNLOAD CSV FUNCTION
-      // ============================================
-
-      /**
-       * Downloads the currently filtered data as a CSV file
-       */
       function downloadFilteredDataAsCSV() {
         if (currentFilteredData.length === 0) {
           alert("No data to download. Please adjust your filters.");
           return;
         }
 
-        // Prepare CSV headers
         const headers = [
           "Gazette Date",
           "Forest Reserve",
@@ -880,53 +827,43 @@
           "District",
           "Gazette Number",
         ];
-
-        // Prepare CSV rows
         const rows = currentFilteredData.map((row) => {
           const gazetteDate = new Date(
             parseInt(row.gaz_year),
             parseInt(row.gaz_month) - 1,
             parseInt(row.gaz_day),
           );
-          // Format date in ISO format: "2025-12-25"
           const year = gazetteDate.getFullYear();
           const month = String(gazetteDate.getMonth() + 1).padStart(2, "0");
           const day = String(gazetteDate.getDate()).padStart(2, "0");
           const dateStr = `${year}-${month}-${day}`;
 
-          // Determine change and area
           let change = "";
           let area = "";
           if (row.add && row.add.trim() !== "") {
             change = "Add";
-            area = row.add; // Keep original precision in CSV
+            area = row.add;
           } else if (row.remove && row.remove.trim() !== "") {
             change = "Remove";
-            area = row.remove; // Keep original precision in CSV
+            area = row.remove;
           }
 
-          // Return row data, wrapping ALL text fields in double quotes and escaping internal quotes
           return [
             `"${dateStr}"`,
             `"${(row.reserve || "-").replace(/"/g, '""')}"`,
             `"${change}"`,
-            area, // Numbers don't need quotes
+            area,
             `"${(row.state || "-").replace(/"/g, '""')}"`,
             `"${(row.district || "-").replace(/"/g, '""')}"`,
             `"${(row.gaznum || "-").toString().replace(/"/g, '""')}"`,
           ].join(",");
         });
 
-        // Combine headers and rows
         const csvContent = [headers.join(","), ...rows].join("\n");
-
-        // Create blob and download
         const blob = new Blob([csvContent], {
           type: "text/csv;charset=utf-8;",
         });
         const link = document.createElement("a");
-
-        // Create filename based on filters
         const stateSlug = selectedState.toLowerCase().replace(/\s+/g, "-");
         const periodLabel =
           selectedPeriod === 60
@@ -935,7 +872,6 @@
               ? "6months"
               : "12months";
         const filename = `forest-reserves-${stateSlug}-${periodLabel}.csv`;
-
         link.href = URL.createObjectURL(blob);
         link.download = filename;
         link.style.display = "none";
@@ -944,79 +880,42 @@
         document.body.removeChild(link);
       }
 
-      // ============================================
-      // TABLE DISPLAY FUNCTION
-      // ============================================
-
-      /**
-       * Creates and displays an HTML table from the filtered data
-       * @param {Array} data - Array of filtered gazette entries to display
-       */
       function displayTable(data) {
-        // Get the container element where the table will be inserted
         const tableContent = document.getElementById("table-content");
-
-        // If there's no data to display, show a message
         if (data.length === 0) {
           tableContent.innerHTML =
-            '<div class="no-data">No forest reserve changes in the last 60 days</div>';
+            '<div class="no-data">No forest reserve changes found for the selected filters</div>';
           return;
         }
 
-        // Start building the HTML table structure
-        let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Gazette Date</th>
-                            <th>Forest Reserve</th>
-                            <th>Change</th>
-                            <th>Area (ha)</th>
-                            <th>State and District</th>
-                            <th>Gazette Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+        let html = `<table><thead><tr><th>Gazette Date</th><th>Forest Reserve</th><th>Change</th><th>Area (ha)</th><th>State and District</th><th>Gazette Number</th></tr></thead><tbody>`;
 
-        // Loop through each row of data and create a table row
         data.forEach((row) => {
-          // Convert the gazette date to a readable format
           const gazetteDate = new Date(
             parseInt(row.gaz_year),
             parseInt(row.gaz_month) - 1,
             parseInt(row.gaz_day),
           );
-
-          // Format the date as "Jan 15, 2026"
           const dateStr = gazetteDate.toLocaleDateString("en-US", {
             year: "numeric",
-            month: "short", // Abbreviated month name
+            month: "short",
             day: "numeric",
           });
 
-          // Determine if this is an addition or removal
-          let change = ""; // Will be "Add" or "Remove"
-          let area = ""; // The hectare value
-          let changeClass = ""; // CSS class for styling (green or red)
+          let change = "";
+          let area = "";
+          let changeClass = "";
 
-          // Check if there's data in the 'add' column
           if (row.add && row.add.trim() !== "") {
             change = "Add";
-            // Round to 0 decimal places and format with commas
             area = Math.round(parseFloat(row.add)).toLocaleString();
-            changeClass = "change-add"; // Green styling
-          }
-          // Otherwise check if there's data in the 'remove' column
-          else if (row.remove && row.remove.trim() !== "") {
+            changeClass = "change-add";
+          } else if (row.remove && row.remove.trim() !== "") {
             change = "Remove";
-            // Round to 0 decimal places and format with commas
             area = Math.round(parseFloat(row.remove)).toLocaleString();
-            changeClass = "change-remove"; // Red styling
+            changeClass = "change-remove";
           }
 
-          // Format the gazette number - convert to string and handle empty values
-          // The gaznum column may be numeric in the CSV, so we convert it
           let gazetteNum = "-";
           if (
             row.gaznum !== undefined &&
@@ -1026,40 +925,17 @@
             gazetteNum = String(row.gaznum);
           }
 
-          // Combine state and district into one field
-          // Format: "State, District" or just "State" if district is missing
           let stateDistrict = row.state || "-";
           if (row.district && row.district.trim() !== "") {
             stateDistrict = `${row.state || "-"}, ${row.district}`;
           }
 
-          // Add a table row with all the data
-          // Use || '-' to show a dash if data is missing
-          html += `
-                    <tr>
-                        <td>${dateStr}</td>
-                        <td>${row.reserve || "-"}</td>
-                        <td class="${changeClass}">${change}</td>
-                        <td>${area}</td>
-                        <td>${stateDistrict}</td>
-                        <td>${gazetteNum}</td>
-                    </tr>
-                `;
+          html += `<tr><td>${dateStr}</td><td>${row.reserve || "-"}</td><td class="${changeClass}">${change}</td><td>${area}</td><td>${stateDistrict}</td><td>${gazetteNum}</td></tr>`;
         });
 
-        // Close the table HTML
-        html += `
-                    </tbody>
-                </table>
-                <div class="table-footer">
-                    Note: Area rounded off. Click <a href="${CSV_URL}" target="_blank">here</a> to download full data.
-                </div>
-            `;
-
-        // Insert the complete table into the page
+        html += `</tbody></table><div class="table-footer">Note: Area rounded off. Click <a href="${CSV_URL}" target="_blank">here</a> to download full data.</div>`;
         tableContent.innerHTML = html;
       }
     </script>
   </body>
 </html>
-
