@@ -253,17 +253,16 @@
         background: var(--text-dark);
         border-radius: 6px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        padding: 30px;
-        width: 100%;
+        padding: 3vh 1vw;
+        width: 80%;
         gap: 2vh;
 
-        margin-top: 20px;
+        margin: 1vh 0vw;
         display: flex;
         flex-direction: column;
         flex: 1;
         min-height: 0;
         overflow: hidden;
-        margin-bottom: 20px;
       }
 
       .table-header {
@@ -353,6 +352,20 @@
         min-height: 0;
       }
 
+      #table-content::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      #table-content::-webkit-scrollbar-track {
+        background: var(--prussian-blue);
+        border-radius: 4px;
+      }
+
+      #table-content::-webkit-scrollbar-thumb {
+        background: var(--forest-pale);
+        border-radius: 4px;
+      }
+
       .loading {
         text-align: center;
         padding: 40px;
@@ -362,6 +375,8 @@
 
       table {
         width: 100%;
+        scrollbar-color: var(--forest-light);
+        scrollbar-width: 2px;
         border-collapse: collapse;
       }
 
