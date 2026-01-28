@@ -1089,7 +1089,7 @@
           "https://raw.githubusercontent.com/yhlreporter/frt/refs/heads/main/reserves.geojson",
 
         MAPBOX_STYLE_URL:
-          "https://api.mapbox.com/styles/v1/yhlreporter/cmkn2sb5b00a701qm8uo8aiol/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieWhscmVwb3J0ZXIiLCJhIjoiY21rbjJmdnY3MGIxZjNkb3A4cjE1MmNhMyJ9.kHTzPHj00zMVnCZwhBOcdg",
+          "https://api.mapbox.com/styles/v1/yhlreporter/cmkn2sb5b00a701qm8uo8aiol/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieWhscmVwb3J0ZXIiLCJhIjoiY21rdDB5MWZyMW5sdTNmb2ZzejdneWRsbyJ9.yMkXycg47C2hQG20mqKoAw",
 
         MAP_CENTER: [4.2105, 101.9758], // Peninsular Malaysia center
         MAP_ZOOM: 6.5,
@@ -1707,8 +1707,10 @@
 
       // Map Initialization and Visualization Functions
       function initializeMap() {
-        // Initialize Leaflet map
-        appState.map = L.map("map").setView(CONFIG.MAP_CENTER, CONFIG.MAP_ZOOM);
+        // Initialize Leaflet map with bounds restrictions
+        appState.map = L.map("map", {
+          maxBoundsViscosity: 1.0, // Makes bounds fully solid (prevents dragging outside)
+        }).setView(CONFIG.MAP_CENTER, CONFIG.MAP_ZOOM);
 
         // Add Mapbox basemap
         L.tileLayer(CONFIG.MAPBOX_STYLE_URL, {
@@ -1803,6 +1805,13 @@
                 });
               },
             }).addTo(appState.map);
+
+            // Set map bounds to Peninsular Malaysia extent
+            const bounds = appState.geojsonLayer.getBounds();
+            // Add padding to bounds (in degrees) to allow slight panning
+            const paddedBounds = bounds.pad(0.1);
+            appState.map.setMaxBounds(paddedBounds);
+            appState.map.setMinZoom(7); // Prevent zooming too far out
           })
           .catch((error) => {
             console.error("Error loading GeoJSON:", error);
@@ -1935,7 +1944,7 @@
 
                 // Tooltip on hover
                 layer.bindTooltip(
-                  `<strong>${reserveName}</strong><br>Source: ${source}`,
+                  `<strong>${reserveName}</strong><br>Map Source: ${source}`,
                   { sticky: true },
                 );
               },
