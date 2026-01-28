@@ -45,7 +45,7 @@
 
       .navigation {
         position: sticky;
-        height: 5vh;
+        height: 6vh;
         margin-bottom: -5vh;
         top: 0;
         z-index: 1000;
@@ -163,7 +163,7 @@
       .landing-section {
         width: 100%;
         height: 100vh;
-        padding: 60px 20px 30px 20px;
+        padding: 6vh 20px 30px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -427,7 +427,7 @@
 
       @media (max-width: 768px) {
         .landing-section {
-          padding: 60px 10px 30px 10px;
+          padding: 7vh 10px 30px 10px;
         }
 
         .table-container {
@@ -776,40 +776,82 @@
 
       /* Mobile responsiveness for map section */
       @media (max-width: 768px) {
+        #map-section {
+          padding: 7vh 10px 1vh 10px;
+          height: 100vh;
+          overflow: hidden;
+        }
+
         .map-container-wrapper {
           flex-direction: column;
-          height: auto;
+          height: 100vh;
+          max-height: 100vh;
+          overflow: hidden;
+          gap: 0;
         }
 
         .map-view {
-          flex: 0 0 100%;
+          flex: 0 0 50vh;
           height: 50vh;
+          width: 100%;
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
         }
 
         .map-data-panel {
-          flex: 0 0 100%;
-          height: auto;
-          min-height: 60vh;
+          flex: 0 0 50vh;
+          height: 50vh;
+          max-height: 50vh;
+          width: 100%;
+          overflow-y: auto;
+          border-top-left-radius: 0px;
+          border-top-right-radius: 0px;
         }
 
         .panel-header {
-          flex-direction: column;
+          flex-direction: row;
           gap: 10px;
           align-items: flex-start;
         }
 
         .panel-header h3 {
-          font-size: 1.2rem;
+          font-size: 1.4rem;
         }
 
         .stat-card {
-          flex-direction: column;
+          flex-direction: row;
           align-items: flex-start;
           gap: 10px;
         }
 
         .stat-value {
+          align-self: center;
           font-size: 1.5rem;
+        }
+
+        .panel-content {
+          padding: 15px;
+        }
+
+        .chart-card,
+        .table-card {
+          padding: 15px;
+          margin-bottom: 15px;
+        }
+
+        .chart-card h4,
+        .table-card h4 {
+          font-size: 0.9rem;
+          margin-bottom: 10px;
+        }
+
+        .table-card table {
+          font-size: 0.75rem;
+        }
+
+        .table-card th,
+        .table-card td {
+          padding: 6px 4px;
         }
       }
     </style>
@@ -1423,6 +1465,14 @@
         .addEventListener("scroll", debouncedScrollHandler);
       window.addEventListener("load", updateScrollIndicators);
       window.addEventListener("resize", updateScrollIndicators);
+
+      // Handle map resize on window resize
+      const handleMapResize = debounce(function () {
+        if (appState.map) {
+          appState.map.invalidateSize();
+        }
+      }, 250);
+      window.addEventListener("resize", handleMapResize);
 
       // Set up dropdown event listeners once
       document
