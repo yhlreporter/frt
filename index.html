@@ -259,6 +259,117 @@
         flex: 1;
         min-height: 0;
         overflow: hidden;
+        position: relative;
+      }
+
+      /* Primer Overlay Styles */
+      .primer-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        background: var(--text-dark);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2vh;
+        padding-bottom: 2vh;
+
+        border-radius: var(--border-radius);
+        overflow-y: auto;
+      }
+
+      .primer-overlay.hidden {
+        display: none;
+      }
+
+      .primer-content {
+        width: 100%;
+        padding: 0 20vw 0 20vw;
+        text-align: left;
+      }
+
+      .primer-content h4 {
+        color: var(--forest-light);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 10px 0 10px 0;
+      }
+
+      .primer-content h4:first-child {
+        margin-top: 0;
+      }
+
+      .primer-content p {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        line-height: 1.2rem;
+        margin: 0 0 12px 0;
+      }
+
+      .primer-content p:last-child {
+        margin-bottom: 0;
+      }
+
+      .primer-overlay::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .primer-overlay::-webkit-scrollbar-track {
+        background: var(--text-dark);
+      }
+
+      .primer-overlay::-webkit-scrollbar-thumb {
+        background: var(--forest-light);
+      }
+
+      .primer-close-btn {
+        margin-top: 2vh;
+        background: var(--forest-light);
+        color: var(--text-dark);
+        border: solid 2px var(--forest-light);
+        padding: 4px 8px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: inherit;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .primer-close-btn:hover {
+        background: var(--forest-medium);
+        color: var(--text-light);
+        border-color: var(--forest-pale);
+      }
+
+      @media (max-width: 768px) {
+        .primer-overlay {
+          padding-top: 3vh;
+          padding-bottom: 3vh;
+        }
+
+        .primer-content {
+          padding: 0 5vw;
+        }
+
+        .primer-content h4 {
+          font-size: 1rem;
+        }
+
+        .primer-content p {
+          font-size: 0.9rem;
+          line-height: 1.6;
+        }
+
+        .primer-close-btn {
+          padding: 8px 20px;
+          font-size: 0.95rem;
+        }
       }
 
       .table-header {
@@ -915,6 +1026,56 @@
         </div>
 
         <div class="table-container">
+          <!-- Primer Overlay -->
+          <div class="primer-overlay" id="primer-overlay">
+            <div class="primer-content">
+              <h4>What's here?</h4>
+              <p>
+                This platform shows <strong>all official changes</strong> in
+                areas of forest reserves in Peninsular Malaysia since January 1,
+                2002 to <span id="primer-update-date"></span>. All changes
+                reported here were published in government <em>gazettes</em>.
+              </p>
+              <p>
+                The changes are presented in tables, charts, and maps. You can
+                also review and retrieve the original gazettes for every change.
+              </p>
+
+              <h4>Why Gazettes?</h4>
+              <p>
+                In Malaysia, only state governments have the authority to add,
+                remove, or classify forest reserves.
+              </p>
+              <p>
+                As per forestry laws, when states add or remove forest reserves,
+                they must (1) publish the change in a government document called
+                'gazette', and (2) the change would take effect on the date
+                indicated in the gazette.
+              </p>
+              <p>
+                Therefore, gazettes are the essential, ultimate, and legally
+                binding documents on the status of forest reserves. You need
+                gazettes to monitor or verify forest reserve area changes. A map
+                of forest reserves would be helpful too.
+              </p>
+
+              <h4>For you</h4>
+              <p>
+                But most gazettes and forest reserve maps are inaccessible, even
+                to many government agencies, universities, and auditors. The
+                documents are kept behind paywalls or demand time and expertise
+                to use.
+              </p>
+              <p>
+                I collected, compiled, and cleaned those documents, and
+                visualised the data for you here.
+              </p>
+            </div>
+            <button class="primer-close-btn" id="primer-close-btn">
+              Okay! I'm ready to explore.
+            </button>
+          </div>
+
           <div class="table-header">
             <div class="table-title-row">
               <span class="table-title-text">Changes in</span>
@@ -1495,6 +1656,27 @@
           downloadFilteredDataAsCSV();
         });
 
+      // Primer overlay functionality
+      function initPrimerOverlay() {
+        const primerOverlay = document.getElementById("primer-overlay");
+        const primerCloseBtn = document.getElementById("primer-close-btn");
+
+        // Check localStorage - hide overlay if user has already seen it
+        const primerDismissed = localStorage.getItem("primerDismissed");
+        if (primerDismissed === "true") {
+          primerOverlay.classList.add("hidden");
+        }
+
+        // Close button handler
+        primerCloseBtn.addEventListener("click", function () {
+          primerOverlay.classList.add("hidden");
+          localStorage.setItem("primerDismissed", "true");
+        });
+      }
+
+      // Initialize primer overlay on page load
+      initPrimerOverlay();
+
       // Load and parse CSV data
       Papa.parse(CONFIG.CSV_URL, {
         download: true,
@@ -1537,12 +1719,16 @@
       function updateDateDisplays() {
         const updateDateEl1 = document.getElementById("update-date1");
         const updateDateEl2 = document.getElementById("update-date2");
+        const primerDateEl = document.getElementById("primer-update-date");
         const formattedDate = appState.lastUpdatedDate.toLocaleDateString(
           "en-US",
           CONFIG.DATE_FORMAT_SHORT,
         );
         updateDateEl1.textContent = formattedDate;
         updateDateEl2.textContent = formattedDate;
+        if (primerDateEl) {
+          primerDateEl.textContent = formattedDate;
+        }
       }
 
       function filterAndDisplayData() {
